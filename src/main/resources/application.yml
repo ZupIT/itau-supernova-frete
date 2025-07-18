@@ -1,0 +1,25 @@
+#Configuracoes do tomcat
+server:
+  shutdown: graceful
+  servlet:
+    context-path: /itau-supernova-frete
+    encoding:
+      charset: UTF-8
+      enabled: true
+  undertow:
+    websocket:
+      enabled: false
+    threads:
+      worker: 64 # Generally this should be reasonably high, at least 10 per CPU core: https://undertow.io/undertow-docs/undertow-docs-2.1.0/index.html#listeners-2
+      io: 4 # One IO thread per CPU core is a reasonable default: https://undertow.io/undertow-docs/undertow-docs-2.1.0/index.html#listeners-2
+spring:
+  application:
+    name: itau-supernova-frete
+
+supplier-properties:
+  url: ${SUPPLIER_URL}
+  read-timeout: ${SUPPLIER_READ_TIMEOUT}
+  connect-timeout: ${SUPPLIER_CONNECT_TIMEOUT}
+  x-application-key: ${SUPPLIER_X_APPLICATION_KEY}
+  client-id: ${SUPPLIER_CLIENT_ID}
+  client-secret: ${SUPPLIER_CLIENT_SECRET}
