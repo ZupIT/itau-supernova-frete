@@ -1,0 +1,247 @@
+<?xml version="1.0" encoding="UTF-8"?>
+	<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 https://maven.apache.org/xsd/maven-4.0.0.xsd">
+	    <modelVersion>4.0.0</modelVersion>
+
+	    <parent>
+	        <groupId>org.springframework.boot</groupId>
+	        <artifactId>spring-boot-starter-parent</artifactId>
+	        <version>3.3.11</version>
+	        <relativePath/> <!-- lookup parent from repository -->
+	    </parent>
+
+	    <groupId>br.com.zup.itrau.supernova.frete</groupId>
+	    <artifactId>itau-supernova-frete</artifactId>
+	    <version>0.0.1-SNAPSHOT</version>
+	    <name>itau-supernova-frete</name>
+	    <description>Responsible for calculate freight</description>
+
+	    <properties>
+	        <java.version>21</java.version>
+	        <lombok.version>1.18.32</lombok.version>
+			<org.mapstruct.version>1.5.5.Final</org.mapstruct.version>
+	    </properties>
+
+	    <dependencies>
+	        <!-- Spring Boot Dependencies -->
+	        <dependency>
+	            <groupId>org.springframework.boot</groupId>
+	            <artifactId>spring-boot-starter-web</artifactId>
+				<exclusions>
+					<exclusion>
+						<groupId>org.springframework.boot</groupId>
+						<artifactId>spring-boot-starter-tomcat</artifactId>
+					</exclusion>
+				</exclusions>
+	        </dependency>
+			<dependency>
+				<groupId>org.springframework.boot</groupId>
+				<artifactId>spring-boot-starter-undertow</artifactId>
+			</dependency>
+	        <dependency>
+	            <groupId>org.springframework.boot</groupId>
+	            <artifactId>spring-boot-starter-validation</artifactId>
+	        </dependency>
+	        <dependency>
+	            <groupId>org.springframework.boot</groupId>
+	            <artifactId>spring-boot-devtools</artifactId>
+	            <scope>runtime</scope>
+	            <optional>true</optional>
+	        </dependency>
+	        <dependency>
+	            <groupId>org.springframework.boot</groupId>
+	            <artifactId>spring-boot-starter-test</artifactId>
+	            <scope>test</scope>
+	        </dependency>
+
+	        <!-- Jackson -->
+	        <dependency>
+	            <groupId>com.fasterxml.jackson.module</groupId>
+	            <artifactId>jackson-module-kotlin</artifactId>
+	        </dependency>
+
+	        <!-- MapStruct -->
+	        <dependency>
+	            <groupId>org.mapstruct</groupId>
+	            <artifactId>mapstruct</artifactId>
+	            <version>${org.mapstruct.version}</version>
+	        </dependency>
+
+	        <!-- Lombok -->
+	        <dependency>
+	            <groupId>org.projectlombok</groupId>
+	            <artifactId>lombok</artifactId>
+	            <scope>provided</scope>
+	        </dependency>
+
+	        <!-- Feign -->
+	        <dependency>
+	            <groupId>org.springframework.cloud</groupId>
+	            <artifactId>spring-cloud-starter-openfeign</artifactId>
+	            <version>4.1.4</version>
+	            <exclusions>
+	                <exclusion>
+	                    <groupId>commons-io</groupId>
+	                    <artifactId>commons-io</artifactId>
+	                </exclusion>
+	            </exclusions>
+	        </dependency>
+	        <dependency>
+	            <groupId>io.github.openfeign</groupId>
+	            <artifactId>feign-httpclient</artifactId>
+	            <version>13.2.1</version>
+	        </dependency>
+
+	        <!-- Commons IO -->
+	        <dependency>
+	            <groupId>commons-io</groupId>
+	            <artifactId>commons-io</artifactId>
+	            <version>2.18.0</version>
+	        </dependency>
+	    </dependencies>
+
+	    <build>
+	        <finalName>itau-supernova-frete</finalName>
+	        <sourceDirectory>${project.basedir}/src/main/java</sourceDirectory>
+	        <testSourceDirectory>${project.basedir}/src/test/</testSourceDirectory>
+
+	        <plugins>
+	            <!-- Compiler Plugin -->
+	            <plugin>
+	                <groupId>org.apache.maven.plugins</groupId>
+	                <artifactId>maven-compiler-plugin</artifactId>
+	                <version>3.10.1</version>
+	                <configuration>
+	                    <source>${java.version}</source>
+	                    <target>${java.version}</target>
+	                    <annotationProcessorPaths>
+	                        <path>
+	                            <groupId>org.mapstruct</groupId>
+	                            <artifactId>mapstruct-processor</artifactId>
+	                            <version>${org.mapstruct.version}</version>
+	                        </path>
+	                        <path>
+	                            <groupId>org.projectlombok</groupId>
+	                            <artifactId>lombok</artifactId>
+	                            <version>${lombok.version}</version>
+	                        </path>
+	                        <path>
+	                            <groupId>org.projectlombok</groupId>
+	                            <artifactId>lombok-mapstruct-binding</artifactId>
+	                            <version>0.2.0</version>
+	                        </path>
+	                    </annotationProcessorPaths>
+	                </configuration>
+	            </plugin>
+
+	            <!-- Spring Boot Plugin -->
+	            <plugin>
+	                <groupId>org.springframework.boot</groupId>
+	                <artifactId>spring-boot-maven-plugin</artifactId>
+	                <configuration>
+	                    <excludes>
+	                        <exclude>
+	                            <groupId>org.projectlombok</groupId>
+	                            <artifactId>lombok</artifactId>
+	                        </exclude>
+	                    </excludes>
+	                </configuration>
+	            </plugin>
+
+	            <!-- GMavenPlus Plugin -->
+	            <plugin>
+	                <groupId>org.codehaus.gmavenplus</groupId>
+	                <artifactId>gmavenplus-plugin</artifactId>
+	                <version>1.13.0</version>
+	                <executions>
+	                    <execution>
+	                        <goals>
+	                            <goal>compile</goal>
+	                            <goal>compileTests</goal>
+	                        </goals>
+	                    </execution>
+	                </executions>
+	            </plugin>
+
+	            <!-- Surefire Plugin -->
+	            <plugin>
+	                <groupId>org.apache.maven.plugins</groupId>
+	                <artifactId>maven-surefire-plugin</artifactId>
+	                <version>3.2.2</version>
+	                <configuration>
+	                    <systemPropertyVariables>
+	                        <com.athaydes.spockframework.report.outputDir>target/spock</com.athaydes.spockframework.report.outputDir>
+	                    </systemPropertyVariables>
+	                    <includes>
+	                        <include>**/*Spec.java</include>
+	                        <include>**/*Test.java</include>
+	                        <include>**/*Spec.groovy</include>
+	                    </includes>
+	                </configuration>
+	            </plugin>
+
+	            <!-- JaCoCo Plugin -->
+	            <plugin>
+	                <groupId>org.jacoco</groupId>
+	                <artifactId>jacoco-maven-plugin</artifactId>
+	                <version>0.8.8</version>
+	                <executions>
+	                    <execution>
+	                        <id>prepare-agent</id>
+	                        <goals>
+	                            <goal>prepare-agent</goal>
+	                        </goals>
+	                    </execution>
+	                    <execution>
+	                        <id>report</id>
+	                        <phase>test</phase>
+	                        <goals>
+	                            <goal>report</goal>
+	                        </goals>
+	                    </execution>
+	                </executions>
+	            </plugin>
+
+	            <!-- Sonar Plugin -->
+	            <plugin>
+	                <groupId>org.sonarsource.scanner.maven</groupId>
+	                <artifactId>sonar-maven-plugin</artifactId>
+	                <version>4.0.0.4121</version>
+	            </plugin>
+
+	            <!-- Protoc Plugin -->
+	            <plugin>
+	                <groupId>com.github.os72</groupId>
+	                <artifactId>protoc-jar-maven-plugin</artifactId>
+	                <version>3.11.4</version>
+	                <executions>
+	                    <execution>
+	                        <phase>generate-sources</phase>
+	                        <goals>
+	                            <goal>run</goal>
+	                        </goals>
+	                        <configuration>
+	                            <protocVersion>3.25.3</protocVersion>
+	                            <inputDirectories>
+	                                <include>src/main/protobuf</include>
+	                            </inputDirectories>
+	                            <outputTargets>
+	                                <outputTarget>
+	                                    <type>java</type>
+	                                    <outputDirectory>src/main/java</outputDirectory>
+	                                </outputTarget>
+	                            </outputTargets>
+	                        </configuration>
+	                    </execution>
+	                </executions>
+	            </plugin>
+
+	            <!-- Dependency Plugin -->
+	            <plugin>
+	                <groupId>org.apache.maven.plugins</groupId>
+	                <artifactId>maven-dependency-plugin</artifactId>
+	                <version>3.6.0</version>
+	            </plugin>
+	        </plugins>
+	    </build>
+	</project>
