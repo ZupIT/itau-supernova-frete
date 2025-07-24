@@ -1,0 +1,40 @@
+version: 0.2
+
+env:
+  variables:
+    PROJECT_NAME: itau-supernova-frete
+    IMAGE_REPO_NAME: itau-supernova-frete
+    ECR_URI: 877979957001.dkr.ecr.sa-east-1.amazonaws.com
+  secrets-manager:
+    SONARQUBE_ENDPOINT: "/application/sonarqube-itaushop:SONARQUBE_ENDPOINT"
+    SONARQUBE_TOKEN: "/application/sonarqube-itaushop:SONARQUBE_TOKEN"
+phases:
+  install:
+    commands:
+      - echo Starting the Docker daemon...
+      - nohup /usr/local/bin/dockerd-entrypoint.sh > /dev/null 2>&1 &
+  pre_build:
+    commands:
+      - aws ecr get-login-password --region sa-east-1 | docker login --username AWS --password-stdin $ECR_URI
+      - GIT_TAG=$(git describe --tags --abbrev=0)
+  build:
+    on-failure: ABORT
+    commands:
+      - echo Build started on `date`
+      - echo GIT_TAG=$GIT_TAG
+      # - mvn compile install sonar:sonar -Dsonar.host.url=$SONARQUBE_ENDPOINT -Dsonar.token=$SONARQUBE_TOKEN -Dsonar.project.properties=sonar-project.properties
+      - mvn compile install
+      - echo Building the Docker image...
+      - docker build -t $ECR_URI/$IMAGE_REPO_NAME:$GIT_TAG .
+      - echo Build completed on `date`
+  post_build:
+    on-failure: ABORT
+    commands:
+      - echo Pushing the Docker image TAG=$GIT_TAG to Amazon ECR ...
+      - docker push $ECR_URI/$IMAGE_REPO_NAME:$GIT_TAG
+      - echo BUILD COMPLETED!
+      - echo PROJECT_NAME=${PROJECT_NAME} TAG=${GIT_TAG}
+      - echo CONTAINER_IMAGE=${ECR_URI}/${IMAGE_REPO_NAME}:${GIT_TAG}
+cache:
+  paths:
+    - '/root/.m2/**/*'
