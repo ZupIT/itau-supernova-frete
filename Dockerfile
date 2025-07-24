@@ -1,7 +1,7 @@
 FROM 877979957001.dkr.ecr.sa-east-1.amazonaws.com/java-21-aws:alpine-1.0.0
 
 ENV APP_TARGET target
-ENV APP itau-supernova-supplier.jar
+ENV APP itau-supernova-frete.jar
 
 RUN apk add --no-cache curl
 
