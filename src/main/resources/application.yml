@@ -23,3 +23,11 @@ supplier-properties:
   x-application-key: ${SUPPLIER_X_APPLICATION_KEY}
   client-id: ${SUPPLIER_CLIENT_ID}
   client-secret: ${SUPPLIER_CLIENT_SECRET}
+
+
+# Actuator
+management:
+  endpoints:
+    web:
+      exposure:
+        include: health, info, metrics, refresh
