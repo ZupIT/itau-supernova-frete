@@ -1,4 +1,3 @@
-#Configuracoes do tomcat
 server:
   shutdown: graceful
   servlet:
