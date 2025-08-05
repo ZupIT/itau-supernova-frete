@@ -1,6 +1,7 @@
 package br.com.zup.itau.supernova.frete.config.handler;
 
 import br.com.zup.itau.supernova.frete.controller.model.ErrorResponse;
+import br.com.zup.itau.supernova.frete.gateway.feign.exception.SupplierIntegrationException;
 import com.fasterxml.jackson.databind.JsonMappingException;
 import com.fasterxml.jackson.databind.exc.InvalidFormatException;
 import com.fasterxml.jackson.databind.exc.UnrecognizedPropertyException;
@@ -23,6 +24,14 @@ public class RestExceptionHandler {
     private static final String INVALID_MESSAGE = "Atributos inválidos!";
     private static final String INVALID_FIELD_PATTERN = "%s inválido!";
     private static final String PAYLOAD_RESPONSE = "payload resposta:";
+
+    @ExceptionHandler(SupplierIntegrationException.class)
+    @ResponseStatus(HttpStatus.INTERNAL_SERVER_ERROR)
+    public ErrorResponse handleSupplierException(final SupplierIntegrationException ex) {
+        var errorResponse = ErrorResponse.builder().message(ex.getMessage()).build();
+        LOGGER.warn("Supplier exception occurred: [{}]", errorResponse);
+        return errorResponse;
+    }
 
     @ExceptionHandler({MethodArgumentNotValidException.class})
     @ResponseStatus(HttpStatus.BAD_REQUEST)
