@@ -26,7 +26,7 @@ public class RestExceptionHandler {
     private static final String PAYLOAD_RESPONSE = "payload resposta:";
 
     @ExceptionHandler(SupplierIntegrationException.class)
-    @ResponseStatus(HttpStatus.INTERNAL_SERVER_ERROR)
+    @ResponseStatus(HttpStatus.UNPROCESSABLE_ENTITY)
     public ErrorResponse handleSupplierException(final SupplierIntegrationException ex) {
         var errorResponse = ErrorResponse.builder().message(ex.getMessage()).build();
         LOGGER.warn("Supplier exception occurred: [{}]", errorResponse);
