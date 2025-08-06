@@ -11,7 +11,4 @@ USER appuser
 
 COPY ${APP_TARGET}/${APP} /opt
 
-CMD java ${JAVA_OPTS} \
-    -Xms${JAVA_XMS:-512m} \
-    -Xmx${JAVA_XMX:-1024m} \
-    -jar /opt/${APP}
+CMD java ${JAVA_OPTS} -jar /opt/${APP}
