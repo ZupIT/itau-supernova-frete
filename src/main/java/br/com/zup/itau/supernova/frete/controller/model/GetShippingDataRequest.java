@@ -11,7 +11,7 @@ public record GetShippingDataRequest(
         @JsonProperty("skuList")
         @Size(min = 1, max = 1)
         @NotNull
-        List<@Size(min = 1, max = 36) String> skuList,
+        List<@NotBlank @Size(min = 1, max = 36) String> skuList,
 
         @JsonProperty("zipCode")
         @NotBlank
